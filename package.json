@@ -17,6 +17,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@frenchpastries/arrange": "^0.1.0",
     "@frenchpastries/assemble": "^0.1.0",
     "@frenchpastries/millefeuille": "^0.1.5",
     "nodemon": "^1.18.6"
