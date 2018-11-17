@@ -1,4 +1,13 @@
+# JS Stuff
+node_modules/
+
+# OS Stuff
 .DS_Store
 Thumbs.db
 
-node_modules/
+# Yarn stuff
+yarn-error.log
+
+# Test stuff
+coverage/
+.nyc*
