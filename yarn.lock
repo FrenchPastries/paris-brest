@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@frenchpastries/assemble@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@frenchpastries/assemble/-/assemble-0.1.0.tgz#01d2325d276c8fa641c8550d7fb6aa4cfc5fd5a5"
+  integrity sha512-HGpBvxT1nuB1K8V1fvig2DEFHtAdo0iewq0ruBlm/tQJoJzQUMuTLYrRKaQLyAa14COyRAJXk+LQepxN0TB9EA==
+
 "@frenchpastries/millefeuille@^0.1.5":
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/@frenchpastries/millefeuille/-/millefeuille-0.1.5.tgz#fa262247ab4a3b026a0f4d54d1af3af953a0d4df"
