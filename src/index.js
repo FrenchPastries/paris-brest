@@ -1,3 +1,4 @@
+// This require add mapFirst, mapSecond and mapTuple to Arrays.
 require('./array/extra')
 
 const GET  = 'GET'
