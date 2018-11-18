@@ -18,7 +18,7 @@ const selectUsers = () => {
 }
 
 const returnUsers = users => {
-  return [ response(users.rows) ]
+  return response(users.rows)
 }
 
 const reducer = ParisBrest.resolve(({ msg, body }, state) => {

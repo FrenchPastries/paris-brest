@@ -25,11 +25,12 @@ const removeEmptySideEffect = sideEffect => {
 }
 
 const execReducer = reducer => ([ state, allSideEffects ], sideEffect) => {
-  return reducer(sideEffect, state).mapSecond(effect =>
-    allSideEffects.concat(
-      removeEmptySideEffect(effect)
-    )
-  )
+  const results = reducer(sideEffect, state)
+  if (Array.isArray(results)) {
+    return results.mapSecond(effect => allSideEffects.concat(removeEmptySideEffect))
+  } else {
+    return [ results, allSideEffects ]
+  }
 }
 
 const accumulateSideEffects = (reducer, state) => sideEffects => {
@@ -70,8 +71,13 @@ const prepareSolve = (reducer, sideEffects, state) => {
 }
 
 const resolve = reducer => body => {
-  const [ state, sideEffects ] = reducer(body)
-  return prepareSolve(reducer, sideEffects, state)
+  const results = reducer(body)
+  if (Array.isArray(results)) {
+    const [ state, sideEffects ] = results
+    return prepareSolve(reducer, sideEffects, state)
+  } else {
+    return prepareSolve(reducer, undefined, results)
+  }
 }
 
 const create = reducer => request => {
