@@ -21,7 +21,7 @@ const returnUsers = users => {
   return response(users.rows)
 }
 
-const reducer = ParisBrest.resolve(({ msg, body }, state) => {
+const reducer = ParisBrest.reduce(({ msg, body }, state) => {
   console.log(msg)
   switch(msg) {
     case SELECT_USERS: return selectUsers()
