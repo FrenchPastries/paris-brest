@@ -70,7 +70,7 @@ const prepareSolve = (reducer, sideEffects, state) => {
   }
 }
 
-const resolve = reducer => body => {
+const reduce = reducer => body => {
   const results = reducer(body)
   if (Array.isArray(results)) {
     const [ state, sideEffects ] = results
@@ -85,14 +85,20 @@ const create = reducer => request => {
     case GET:
       // Should we parse the URL and search for msg?
       // Or just fallback in switch default like now?
-      return resolve(reducer)({})
+      return reduce(reducer)({})
     case POST:
       const body = JSON.parse(request.body)
-      return resolve(reducer)(body)
+      return reduce(reducer)(body)
+    default:
+      return {
+        statusCode: 500,
+        headers: {},
+        body: `${request.method} is not supported.`
+      }
   }
 }
 
 module.exports = {
   create,
-  resolve
+  reduce
 }
