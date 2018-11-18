@@ -106,3 +106,73 @@ What's happening here is that we go into the reducer three times, resolving the 
 If you're unsure about all of this, run the code into your computer, you'll get a better comprehension if you're able to use and tweak the framework.
 
 # What about side effects which can fail?
+
+For every side effect which can fail, the framework handle it without any problem. To do it, you should use the helper `Effect.attempt`, which accept a success message and a failure message, like said above. So, let's say your side effect can fail because of a failed internet connection.
+
+```javascript
+const upload = url => {
+  const file = util.promisify(fs.readFile)(path)
+  return file.then(buffer => {
+    const base64 = buffer.toString('base64')
+    return uploadFileAsBase64(base64) // We assume uploadFileAsBase64 returns a Promise which can fail.
+  })
+}
+
+const uploadFile = state => [ state, Effect.attempt(SUCCESS, FAILURE, upload(state.path)) ]
+```
+
+In the case of success, the success message is triggered with the response as body, and in case of failure, the failure message is triggered with the error as body.
+
+# A Note About Tuples
+
+In ParisBrest, we often use tuples, modelized as an array of two elements. ParisBrest defines two functions on arrays, `mapFirst`, and `mapSecond`, which both accepts a function, exactly like `map`, and transforming respectively the first or second element of the tuple.
+
+# The API
+
+ParisBrest defines two functions: `create` and `reduce`. The first one creates a handler, which convert all GET requests in empty message to the reducer (and triggers the default clause in your reducer), and extracts the message from all POST bodies and pass it to the reducer.  
+The second, `reduce`, accepts a reducer, and returns the runtime, letting you to handle the details on requests, etc. It accepts a message and returns a response. This is useful combined with Assemble, or every routing system you love. You can easily defines custom routes, and creates the corresponding message needed by the runtime, getting back the response, and do whatever else you want. Let's illustrate it.
+
+```javascript
+const ParisBrest = require('@frenchpastries/paris-brest')
+const Assemble = require('@frenchpastries/assemble')
+const MilleFeuille = require('@frenchpastries/millefeuille')
+const { response } = require('@frenchpastries/millefeuille/response')
+
+const HOME = 'HOME'
+const GET_SUPER_PAGE = 'GET_SUPER_PAGE'
+const GET_MY_PAGE = 'GET_MY_PAGE'
+
+const reducer = ParisBrest.resolve(({ msg, body }, state) => {
+  switch(msg) {
+    case HOME: return response('Home')
+    case GET_SUPER_PAGE: return response('This is a super page')
+    case GET_MY_PAGE: return response('Get my page')
+  }
+})
+
+const home = { msg: HOME }
+const getSuperPage = { msg: GET_SUPER_PAGE }
+const getMyPage = body => { msg: GET_MY_PAGE, body }
+const notFound = {
+  statusCode: 404,
+  headers: {},
+  body: 'Page not found.'
+}
+
+const routes = Assemble.routes([
+  Assemble.get('/', () => reducer(home)),
+  Assemble.get('/my_super_page', () => reducer(getSuperPage)),
+  Assemble.get('/my_page/:id', request => reducer(getMyPage(request.context.id))),
+  Assemble.notFound(() => notFound)
+])
+
+const server = MilleFeuille.create(routes)
+```
+
+# Open Design Discussion
+
+We want to maintain as much as possible discussions in PR and issues open to anyone. We think it's important to share why we're doing things and to discuss about how you use the framework and how you would like to use it!
+
+# Contributing
+
+You love ParisBrest? Feel free to contribute: open issues or propose pull requests! At French Pastries, we love hearing from you!
