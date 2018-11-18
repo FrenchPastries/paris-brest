@@ -27,7 +27,7 @@ const removeEmptySideEffect = sideEffect => {
 const execReducer = reducer => ([ state, allSideEffects ], sideEffect) => {
   const results = reducer(sideEffect, state)
   if (Array.isArray(results)) {
-    return results.mapSecond(effect => allSideEffects.concat(removeEmptySideEffect))
+    return results.mapSecond(effect => allSideEffects.concat(removeEmptySideEffect(effect)))
   } else {
     return [ results, allSideEffects ]
   }
