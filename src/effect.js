@@ -14,8 +14,14 @@ const failure = (msg, effect) => ({
   body: effect
 })
 
+const map = (mapper, effect) => ({
+  ...effect,
+  body: effect.body.then(mapper)
+})
+
 module.exports = {
   success,
   attempt,
-  failure
+  failure,
+  map
 }
