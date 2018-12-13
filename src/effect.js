@@ -31,6 +31,7 @@ const failure = (msg, effect) => new Effect({
 })
 
 module.exports = {
+  Effect,
   success,
   attempt,
   failure
