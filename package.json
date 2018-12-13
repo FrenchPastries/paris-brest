@@ -21,6 +21,7 @@
     "@frenchpastries/arrange": "^0.1.0",
     "@frenchpastries/assemble": "^0.1.0",
     "@frenchpastries/millefeuille": "^0.1.5",
+    "eslint": "^5.10.0",
     "generate-export-aliases": "^1.1.0",
     "nodemon": "^1.18.6"
   },
